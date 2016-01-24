@@ -1,5 +1,5 @@
 # Yelena
-Basic Python based home automation, build for RFXCom
+Basic Python based home automation, build for RFXCom and KlikAanKlikUit
 
 **Warning:** If you are looking for easy-to-use out of the box home automation, this isn't what you are looking for! Try something like http://www.openhab.org/
 
