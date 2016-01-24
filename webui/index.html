@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Yelena</title>
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars.min-latest.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    </head>
+    <style>
+        body {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .card {
+            background: #f6f6f6;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+            color: #555;
+        }
+
+        .status {
+
+            width: 120px;
+            height: 120px;
+            text-align: center;
+            margin: 10px;
+            padding: 10px;
+            float: left;
+        }
+
+        .status .status-icon {
+            font-size: 30px;
+            margin: 10px;
+        }
+
+        .status .status-type {
+            text-transform: uppercase;
+            font-size: 10px;
+            margin-bottom: 10px;
+        }
+
+        .status.engaged {
+            background: purple;
+            color: #fff;
+        }
+
+        .status-alarm.engaged {
+            background: orangered;
+            color: #fff;
+        }
+
+        .device {
+            width: 120px;
+            height: 120px;
+            text-align: center;
+            margin: 10px;
+            padding: 10px;
+            float: left;
+        }
+
+        .device .device-type {
+            text-transform: uppercase;
+            font-size: 10px;
+            margin-bottom: 10px;
+        }
+
+        .device.true {
+            background: #689F38;
+            color: #fff;
+        }
+
+        .device.device-alarm.true {
+            background: orangered;
+            color: #fff;
+        }
+
+        .device.environ {
+           background:  #607D8B;
+           color: #fff;
+        }
+
+        .device.device-light.true {
+            background: #FFEB3B;
+            color: #555;
+        }
+
+        .device .device-icon {
+            font-size: 30px;
+            margin: 10px;
+        }
+
+        .device .device-icon .action {
+            text-decoration: none;
+            font-weight: bold;
+            color: #000;
+        } 
+
+        .action {
+            cursor: pointer;
+        }
+
+        h1 {
+           color: #eee;
+           font-weight: 100;
+           border-bottom: 1px solid #ccc;
+           background: #673AB7;
+           padding: 15px;
+           font-size: 16px;
+           text-transform: uppercase;
+           margin-top: 0px;
+        }
+         
+
+        .clearfix {
+            clear: both;
+        }
+    </style>
+    <body>
+
+        <h1>Yelena</h1>
+
+        <div class="statuses">
+          <div class="card status status-ai action" action="toggle_ai">
+            <div class="status-icon"><i class="fa fa-toggle-on"></i></div>
+            <div class="status-type">Auto</div>
+            <div class="device-name auto-status"></div>
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="lights">
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="devices">
+        </div>
+
+
+        <script id="device-Light" type="text/x-handlebars-template">
+          <div class="card device <%= status %> device-light action" action="switch" target="<%= name %>">
+            <div class="device-icon">
+            <i class="fa fa-lightbulb-o"></i></div>
+            <div class="device-type">light</div>
+            <div class="device-name"><%= name %></div>
+
+          </div>
+        </script>
+
+
+        <script id="device-Dimmer" type="text/x-handlebars-template">
+          <div class="card device <%= status %> device-light action" action="switch" target="<%= name %>">
+            <div class="device-icon">
+              <a href="#" class="action" action="dim" target="<%= name %>">-</a> 
+              <i class="fa fa-lightbulb-o"></i>
+              <a href="#" class="action" action="undim" target="<%= name %>">+</a> 
+            </div>
+            <div class="device-type">dimmer</div>
+            <div class="device-name"><%= name %></div>
+
+          </div>
+        </script>
+
+
+        <script id="device-MotionSensor" type="text/x-handlebars-template">
+          <div class="card device <%= status %> action" action="switch" target="<%= name %>">
+            <div class="device-icon"><i class="fa fa-rss"></i></div>
+            <div class="device-type">motion sensor</div>
+            <div class="device-name"><%= name %></div>
+
+          </div>
+        </script>
+
+
+        <script id="device-PresenceDetector" type="text/x-handlebars-template">
+          <div class="card device <%=  status  %> action" action="switch" target="<%= name %>">
+            <div class="device-icon"><i class="fa fa-flag"></i></div>
+            <div class="device-type">presence</div>
+            <div class="device-name"><%= name %></div>
+
+          </div>
+        </script>
+
+        <script id="device-TwilightSensor" type="text/x-handlebars-template">
+          <div class="card device <%=  status  %> action" action="switch" target="<%= name %>">
+            <div class="device-icon"><i class="fa fa-moon-o"></i></div>
+            <div class="device-type">twilight</div>
+            <div class="device-name"><%= name %></div>
+
+          </div>
+        </script>
+
+        <script id="device-Alarm" type="text/x-handlebars-template">
+          <div class="card device device-alarm <%=  status  %> action" action="switch" target="<%= name %>">
+            <div class="device-icon"><i class="fa fa-warning"></i></div>
+            <div class="device-type">alarm</div>
+            <div class="device-name"><%= name %></div>
+
+          </div>
+        </script>
+
+        <script id="device-TempSensor" type="text/x-handlebars-template">
+          <div class="card device environ">
+            <div class="device-icon"><% if(status) { %><%= status %>c<% } else { %>N/A<% } %></div>
+            <div class="device-type">temperature</div>
+            <div class="device-name"><%= name %></div>
+          </div>
+        </script>
+
+        <script id="device-HumiditySensor" type="text/x-handlebars-template">
+          <div class="card device environ">
+            <div class="device-icon">
+            <% if(status) { %>
+               <% if(status == 0) { %>DRY<% } %>
+               <% if(status == 1) { %>COMFORT<% } %>
+               <% if(status == 2) { %>NORMAL<% } %>
+               <% if(status == 3) { %>WET<% } %>
+            <% } else { %>N/A<% } %>
+            </div>
+            <div class="device-type">humidity</div>
+            <div class="device-name"><%= name %></div>
+          </div>
+        </script>
+
+
+        <script>
+
+            $(document).ready(function() {
+
+                function update() {
+                    $.getJSON("/devices", function(devices) {
+
+                        $(".devices").html("")
+                        $(".lights").html("")
+
+                        for(var index in devices) {
+                            // console.debug(devices[index]);
+                            var device = devices[index];
+
+                            if(! $("#device-"+device.type).length) {
+                                continue;
+                            }
+
+                            var html = _.template($("#device-"+device.type).html())(device);
+                            // console.debug(html);
+                            var element = $("<div/>").html(html)
+
+                            if(device.type == "Light" || device.type == "Dimmer") {
+                                element.appendTo(".lights");
+                            } else {
+                                element.appendTo(".devices");
+                            }
+                        }
+                    });
+
+                    $.getJSON("/context", function(context) {
+
+                        for(var key in context) {
+                            $(".status-"+key).removeClass("engaged")
+                            if(context[key]) {
+                                $(".status-"+key).addClass("engaged")
+                            }
+                            if(key == "auto-status") {
+                                 $(".auto-status").text(context[key])
+                            }
+                        }
+                        console.debug(context)
+                    });
+                }
+
+
+                update();
+                setInterval(function() {
+                    update();
+                }, 5000)
+
+
+                $(document).on("click", ".action", function(event) {
+
+                    console.debug(event);
+
+                    var action = $(this).attr("action")
+                    var target = $(this).attr("target")
+                    console.debug(action, target);
+                    $.post("/command", JSON.stringify({ action: action, target: target}), function() {
+                        update();
+                    })
+
+                    return false;
+                });
+
+
+            });
+        </script>
+
+    </body>
+</html>
