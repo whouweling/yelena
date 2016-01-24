@@ -1,6 +1,6 @@
-from devices.base import SensorDevice
 import time
 
+from devices.base import SensorDevice
 
 class TwilightSensor(SensorDevice):
 

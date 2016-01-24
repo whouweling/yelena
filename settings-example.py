@@ -1,4 +1,5 @@
 
+# This is an example configuration for Yelena, showing how to define devices & rules.
 
 from devices.light import Light
 from devices.dimmer import Dimmer
@@ -24,8 +25,8 @@ logging.getLogger().setLevel(logging.DEBUG)
 #RFXCom(name="rfxcom1",
 #       dev='/dev/serial/by-id/usb-RFXCOM_RFXtrx433_A1Z7CACP-if00-port0')
 
+# The dummy com let's you run Yelena without connected RFXCom hardware
 DummyCom(name="rfxcom1")
-
 
 Notifier(name="push_notification", key="ThzPs3ZnCx")
 

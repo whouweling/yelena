@@ -11,31 +11,27 @@ from devices.humidity_sensor import HumiditySensor
 from devices.motion_sensor import MotionSensor
 from devices.twilight_sensor import TwilightSensor
 import threading
-from devices.light import Light
-from devices.dimmer import Dimmer
 import logging
 import settings
 import time
 
+from devices.light import Light
+from devices.dimmer import Dimmer
+
 
 class RFXCom(CommsDevice):
-
 
     def __init__(self, name, dev):
         super(RFXCom, self).__init__(name)
 
-
-
         def run_event_loop():
-             print("in thread")
-             print("out thread")
              loop = asyncio.new_event_loop()
              asyncio.set_event_loop(loop)
              self.rfxcom = AsyncioTransport(dev,
                                           loop,
                                           callback=self.handler)
-             time.sleep(1) 
-             self.rfxcom.write(b'\r\x00\x00\x01\x03S\x00\xff\x0e/\x00\x00\x00\x00')
+             #time.sleep(1)
+             #self.rfxcom.write(b'\r\x00\x00\x01\x03S\x00\xff\x0e/\x00\x00\x00\x00')
              loop.run_forever()
 
         threading.Thread(target=run_event_loop).start()
@@ -43,7 +39,6 @@ class RFXCom(CommsDevice):
 
     def handler(self, packet):
 
-        # Print out the packet - the string representation will show us the type.
         print(packet)
 
         if isinstance(packet, TempHumidity):
@@ -59,13 +54,11 @@ class RFXCom(CommsDevice):
         # Each packet will have a dictionary which contains parsed data.
         print(packet.data)
 
-        # You can access the raw bytes from the packet too.
         command = binascii.hexlify(packet.raw)
-        #print("Received from RFXCom:", list(command))
 
         for device in devices:
-
             try:
+                # TODO: need to properly decode the protocol here, this is just lazy :-)
                 if hasattr(device, "id") and device.id in command:
 
                     if isinstance(device, MotionSensor):
