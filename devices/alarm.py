@@ -10,7 +10,6 @@ import time
 
 class Alarm(SensorDevice):
 
-
     def __init__(self, name, notify=None, timeout=None):
         self.notify = None
         super(Alarm, self).__init__(name)
@@ -19,7 +18,6 @@ class Alarm(SensorDevice):
         self.notify = notify
         self.timeout = timeout
         self.last_activated = None
-
 
     def switch(self, status):
 

@@ -15,19 +15,15 @@ request_context = {}
 
 class RequestHandler(http.server.BaseHTTPRequestHandler):
 
-
     def do_GET(self):
 
         if self.path == "/":
-
-
             with open("webui/index.html", "r") as index:
                 self.send_text_response(index.read())
             return
 
 
         if self.path == "/devices":
-
             result = []
             for device in devices:
                 result.append({
@@ -35,12 +31,10 @@ class RequestHandler(http.server.BaseHTTPRequestHandler):
                     "type": device.__class__.__name__,
                     "status": device.get_status()
                 })
-
             #print(result)
             self.send_text_response(result)
 
         if self.path == "/context":
-
             self.send_text_response(request_context["context"].serialize())
 
     def do_POST(self):
@@ -51,9 +45,6 @@ class RequestHandler(http.server.BaseHTTPRequestHandler):
        
         try:
            request_context["core"].execute(**command)
-
-        #print("POST")
-       # print(payload)
            self.send_text_response("ok")
         except Exception as e:
            self.send_text_response("error:%s" % str(e))
@@ -81,7 +72,6 @@ class MyTCPServer(socketserver.TCPServer):
 
 class Webserver(threading.Thread):
 
-
     def __init__(self, core, context):
 
         request_context.update({
@@ -91,7 +81,6 @@ class Webserver(threading.Thread):
 
         super(Webserver, self).__init__()
         self.server = MyTCPServer(("", settings.WEBSERVER_PORT), RequestHandler)
-
 
     def run(self):
         self.server.serve_forever()

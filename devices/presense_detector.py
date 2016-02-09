@@ -6,13 +6,11 @@ import time
 
 class PresenceDetector(SensorDevice):
 
-
     def __init__(self, name, ipaddress, timeout=60):
         super(PresenceDetector, self).__init__(name)
         self.ipaddress = ipaddress
         self.timeout = timeout
         self.last_detected = None
-
 
     def switch(self, status):
         self.status = status

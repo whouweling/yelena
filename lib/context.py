@@ -30,13 +30,11 @@ class Context():
 
       return self._context[key]
 
-
    def last_seen(self, key):
       if not key in self._last_seen:
          return None
 
       return time.time() - self._last_seen[key]
-
 
    def serialize(self):
       return self._context
