@@ -4,7 +4,6 @@ import time
 
 class MotionSensor(SensorDevice):
 
-
     def __init__(self, name, id, timeout=10):
         super(MotionSensor, self).__init__(name)
         self.id = id

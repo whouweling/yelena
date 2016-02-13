@@ -6,12 +6,10 @@ from devices.base import Device
 
 class Notifier(Device):
 
-
     def __init__(self, name, key):
         super(Notifier, self).__init__(name)
         self.id = id
         self.key = key
-
 
     def notify(self, msg):
         res = requests.post("https://api.parse.com/1/functions/notify",

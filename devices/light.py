@@ -4,13 +4,11 @@ from devices.base import get_device
 
 class Light(SwitchDevice):
 
-
     def __init__(self, name, id, comm):
         super(Light, self).__init__(name)
         self.id = id
         self.status = None
         self.comm = comm
-
 
     def switch(self, to):
         if to != self.status:

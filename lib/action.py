@@ -24,6 +24,7 @@ class SwitchAction(Action):
 
         get_device(self.device).switch(self.switch)
 
+
 class SwitchAllAction(Action):
 
     def __init__(self, switch, type):

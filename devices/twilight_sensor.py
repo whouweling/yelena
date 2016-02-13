@@ -4,7 +4,6 @@ from devices.base import SensorDevice
 
 class TwilightSensor(SensorDevice):
 
-
     def __init__(self, name, id, timeout=600):
         super(TwilightSensor, self).__init__(name)
         self.id = id
@@ -16,9 +15,9 @@ class TwilightSensor(SensorDevice):
     def detected(self, twilight):
         self.twilight = twilight
         if twilight:
-          self.log("detected darkness")
+            self.log("detected darkness")
         else:  
-          self.log("detected light")
+            self.log("detected light")
 
     def get_status(self):
         return self.twilight

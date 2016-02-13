@@ -12,9 +12,6 @@ from lib.util import to_date_time
 
 import settings
 
-
-
-
 class Core():
 
    def __init__(self, context):
@@ -25,12 +22,9 @@ class Core():
      context.update("ai", False)
 
    def start(self):
-
     #self.notify("AI Core started ...")
     while True:
-
       now = datetime.now()
-
       #print("Status: presence %s, motion %s, alarm %s" % (get_device("presence1").get_status(), get_device("motion1").get_status(), self.context.get("alarm")))
 
       if self.context.get("ai"):
@@ -47,16 +41,8 @@ class Core():
 
       time.sleep(3)
 
-
-
-
-
    def notify(self, msg):
       print(" *** {msg}".format(msg=msg))
-      if settings.NOTIFY:
-
-
-          print(res.status_code, res.text)
 
    def execute(self, action, target=None):
 

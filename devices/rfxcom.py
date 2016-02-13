@@ -36,7 +36,6 @@ class RFXCom(CommsDevice):
 
         threading.Thread(target=run_event_loop).start()
 
-
     def handler(self, packet):
 
         print(packet)
@@ -102,10 +101,9 @@ class RFXCom(CommsDevice):
             logging.info("%s: sending command '%s'" % (self.name, command))
             self.rfxcom.write(binascii.unhexlify(command))
 
-
     def undim(self, device):
 
-       device.level = device.level + 1
+       device.level += 10
        if device.level > 255:
          device.level = 255
 
@@ -115,9 +113,9 @@ class RFXCom(CommsDevice):
 
     def dim(self, device):
 
-       device.level = device.level - 1
-       if device.level < 50:
-         device.level = 50
+       device.level -= 10
+       if device.level < 1:
+         device.level = 1
 
        if device.status:
             dim = hex(device.level)[2:4]
