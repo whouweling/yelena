@@ -48,4 +48,5 @@ class Log:
         return [{"id": id, "date": date, "class": cls, "message": message} for id, date, cls, message in c.fetchall()]
 
 
-log = Log()
+def get_logger():
+    return Log()

@@ -8,7 +8,7 @@ import binascii
 from devices.base import devices
 from devices.base import get_device
 from lib.rule import rules
-from lib.log import log
+from lib.log import get_logger
 from lib.util import to_date_time
 
 import settings
@@ -23,17 +23,13 @@ class Core():
      context.update("ai", False)
 
    def start(self):
-    #self.notify("AI Core started ...")
     while True:
-      now = datetime.now()
-      #print("Status: presence %s, motion %s, alarm %s" % (get_device("presence1").get_status(), get_device("motion1").get_status(), self.context.get("alarm")))
-
       if self.context.get("ai"):
         for rule in rules:
             if rule.check():
                 if self.last_rule != rule:
                     rule.activate()
-                    log.event("rule", "rule '%s' activated" % rule.name)
+                    get_logger().event("rule", "rule '%s' activated" % rule.name)
                     self.context.update("auto-status", rule.name)
                     self.last_rule = rule
                 break
@@ -51,6 +47,8 @@ class Core():
        if action == "switch":
             device = get_device(target)
             device.switch(not device.get_status())
+            get_logger().event("rule", "manually switched '%s' to '%s'" % (device.name, ("on" if device.get_status() else "off")))
+
 
        if action == "dim":
             device = get_device(target)

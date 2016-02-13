@@ -6,7 +6,7 @@ import http.server
 import socketserver
 import threading
 
-from lib.log import Log
+from lib.log import get_logger
 from devices.base import devices
 
 import settings
@@ -50,8 +50,8 @@ class RequestHandler(http.server.BaseHTTPRequestHandler):
                 page = int(parameters["page"][0])
             else:
                 page = 0
-            self.send_text_response(Log().get_events(page=page,
-                                                     count=60))
+            self.send_text_response(get_logger().get_events(page=page,
+                                                            count=60))
 
 
     def do_POST(self):

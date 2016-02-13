@@ -1,5 +1,5 @@
 import time
-from lib.log import log
+from lib.log import get_logger
 
 class Context():
 
@@ -20,8 +20,8 @@ class Context():
          if timeout:
             self._timeout[key] = time.time() + timeout
 
-         log.event("context", "{key} changed to {value}".format(key=key,
-                                                                value=value))
+         get_logger().event("context", "{key} changed to {value}".format(key=key,
+                                                                         value=value))
 
    def get(self, key):
 
