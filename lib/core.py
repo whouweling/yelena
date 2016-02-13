@@ -44,7 +44,7 @@ class Core():
         if action == "switch":
             device = get_device(target)
             device.switch(not device.get_status())
-            get_logger().event("rule", "manually switched '%s' to '%s'" % (device.name, ("on" if device.get_status() else "off")))
+            get_logger().event("core", "manually switched '%s' to '%s'" % (device.name, ("on" if device.get_status() else "off")))
 
         if action == "dim":
             device = get_device(target)

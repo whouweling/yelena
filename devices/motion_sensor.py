@@ -12,6 +12,7 @@ class MotionSensor(SensorDevice):
 
     def detected(self):
         self.motion = time.time()
+        self.log("motion detected")
 
     def switch(self, to):
         self.motion = time.time()

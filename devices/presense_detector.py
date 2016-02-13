@@ -17,12 +17,9 @@ class PresenceDetector(SensorDevice):
         self.last_detected = time.time()
 
     def run(self):
-
         for ip in self.ipaddress:
-
           status, result = subprocess.getstatusoutput("ping -c1 -w2 " + ip)
           if status == 0:
-
              self.last_detected = time.time()
              return
 
