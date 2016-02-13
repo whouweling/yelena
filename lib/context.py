@@ -1,5 +1,5 @@
 import time
-
+from lib.log import log
 
 class Context():
 
@@ -16,10 +16,13 @@ class Context():
 
          self._context[key] = value
          self._last_change[key] = time.time()
+
          if timeout:
             self._timeout[key] = time.time() + timeout
-         print("Context: '{key}' changed to '{value}'".format(key=key,
-                                                              value=value))
+
+         log.event("context", "{key} changed to {value}".format(key=key,
+                                                                value=value))
+
    def get(self, key):
 
       if not key in self._context:

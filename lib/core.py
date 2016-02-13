@@ -8,6 +8,7 @@ import binascii
 from devices.base import devices
 from devices.base import get_device
 from lib.rule import rules
+from lib.log import log
 from lib.util import to_date_time
 
 import settings
@@ -32,6 +33,7 @@ class Core():
             if rule.check():
                 if self.last_rule != rule:
                     rule.activate()
+                    log.event("rule", "rule '%s' activated" % rule.name)
                     self.context.update("auto-status", rule.name)
                     self.last_rule = rule
                 break

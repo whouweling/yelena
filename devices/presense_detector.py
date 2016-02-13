@@ -14,6 +14,7 @@ class PresenceDetector(SensorDevice):
 
     def switch(self, status):
         self.status = status
+        self.last_detected = time.time()
 
     def run(self):
 

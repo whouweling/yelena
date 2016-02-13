@@ -13,11 +13,13 @@ except ImportError:
 from lib.context import Context
 from lib.core import Core
 from lib.webserver import Webserver
+from lib.log import log
 
 import logging
 
 if __name__ == '__main__':
 
+    log.event("main", "started")
     logging.info("Yelena, version {version} starting ...".format(version=VERSION))
 
     context = Context()

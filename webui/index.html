@@ -113,34 +113,88 @@
            text-transform: uppercase;
            margin-top: 0px;
         }
-         
+
+        h1 a {
+            display: inline-block;
+            padding: 5px;
+            font-size: 12px;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid #ccc;
+            margin-left: 10px;
+            margin-right: 5px;
+        }
+
+        h1 a.active {
+            background: #ffffff;
+            color: #673AB7;
+        }
 
         .clearfix {
             clear: both;
         }
+
+        table.table {
+            width: 100%;
+        }
+
+        table.table th {
+            text-align: left;
+        }
+
+        table.table td {
+            border-bottom: 1px solid #ccc;
+            padding: 5px;
+        }
     </style>
     <body>
 
-        <h1>Yelena</h1>
+        <h1>Yelena
+            <a href="#" class="action-show-panel active" panel="control">Controls</a>
+            <a href="#" class="action-show-panel action-load-events" panel="event">Events</a>
+        </h1>
 
-        <div class="statuses">
-          <div class="card status status-ai action" action="toggle_ai">
-            <div class="status-icon"><i class="fa fa-toggle-on"></i></div>
-            <div class="status-type">Auto</div>
-            <div class="device-name auto-status"></div>
-          </div>
+        <div class="panel panel-control">
+            <div class="statuses">
+              <div class="card status status-ai action" action="toggle_ai">
+                <div class="status-icon"><i class="fa fa-toggle-on"></i></div>
+                <div class="status-type">Auto</div>
+                <div class="device-name auto-status"></div>
+              </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="lights">
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="devices">
+            </div>
         </div>
 
-        <div class="clearfix"></div>
-
-        <div class="lights">
+        <div class="panel panel-event">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="10%">Id</th>
+                        <th width="10%">Date</th>
+                        <th width="10%">Class</th>
+                        <th>Event</th>
+                    </tr>
+                </thead>
+                <tbody class="event">
+                </tbody>
+            </table>
         </div>
 
-        <div class="clearfix"></div>
-
-        <div class="devices">
-        </div>
-
+        <script id="event-row" type="text/x-handlebars-template">
+            <td><%= event.id %></td>
+            <td><%= event.date %></td>
+            <td><%= event.class %></td>
+            <td><%= event.message %></td>
+        </script>
 
         <script id="device-Light" type="text/x-handlebars-template">
           <div class="card device <%= status %> device-light action" action="switch" target="<%= name %>">
@@ -294,6 +348,59 @@
                     return false;
                 });
 
+                $(".panel").hide()
+                $(".panel-control").show()
+
+
+                $(document).on("click", ".action-show-panel", function(event) {
+                    $(".action-show-panel").removeClass("active")
+                    $(this).addClass("active")
+                    $(".panel").hide()
+                    $(".panel-" + $(this).attr("panel")).show()
+                });
+
+                console.debug($("tbody").length, $("#event").html())
+
+                var event_page = 0;
+                var loading_events = false;
+
+                $(document).on("click", ".action-load-events", function(event) {
+                    event_page = 0;
+                    load_events(event_page);
+                });
+
+                /* Endless event scroll */
+                $(window).scroll(function() {
+                    var scrolled = 100 * $(window).scrollTop() / ($(document).height() - $(window).height());
+                    if(scrolled > 90 && ! loading_events) {
+                        event_page = event_page + 1;
+                        load_events(event_page);
+
+                    }
+                });
+
+
+
+                function load_events(page) {
+                    $.getJSON("/event", { page: page }, function (events) {
+
+                        if(page == 0) {
+                            $("tbody.event").html("");
+                        }
+
+                        loading_events = true;
+
+                        for (var index in events) {
+                            var event = events[index];
+                            console.debug(event)
+
+                            var html = _.template($("#event-row").html())({event: event});
+                            var element = $("<tr/>").html(html);
+                            element.appendTo("tbody.event");
+                        }
+                        loading_events = false;
+                    });
+                }
 
             });
         </script>

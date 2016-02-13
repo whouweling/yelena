@@ -1,10 +1,12 @@
 import cgi
 import json
 import socket
-
+from urllib import parse
 import http.server
 import socketserver
 import threading
+
+from lib.log import Log
 from devices.base import devices
 
 import settings
@@ -17,13 +19,20 @@ class RequestHandler(http.server.BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-        if self.path == "/":
+        parameters = {}
+
+        try:
+            (path, req_vars) = self.path.split("?", maxsplit=1)
+            parameters = parse.parse_qs(req_vars)
+        except ValueError:
+            path = self.path
+
+        if path == "/":
             with open("webui/index.html", "r") as index:
                 self.send_text_response(index.read())
             return
 
-
-        if self.path == "/devices":
+        if path == "/devices":
             result = []
             for device in devices:
                 result.append({
@@ -31,11 +40,19 @@ class RequestHandler(http.server.BaseHTTPRequestHandler):
                     "type": device.__class__.__name__,
                     "status": device.get_status()
                 })
-            #print(result)
             self.send_text_response(result)
 
-        if self.path == "/context":
+        if path == "/context":
             self.send_text_response(request_context["context"].serialize())
+
+        if path == "/event":
+            if "page" in parameters:
+                page = int(parameters["page"][0])
+            else:
+                page = 0
+            self.send_text_response(Log().get_events(page=page,
+                                                     count=60))
+
 
     def do_POST(self):
         content_len = int(self.headers.get('content-length', 0))

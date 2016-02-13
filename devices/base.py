@@ -1,4 +1,5 @@
-import logging
+
+from lib.log import log as logger
 
 devices = []
 
@@ -19,7 +20,7 @@ class Device():
         self.log("registered")
 
     def log(self, msg):
-        logging.info("device: {name}: {msg}".format(
+        logger.event("device", "{name}: {msg}".format(
             name=self.name,
             msg=msg
         ))

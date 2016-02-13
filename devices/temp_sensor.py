@@ -12,7 +12,7 @@ class TempSensor(SensorDevice):
 
     def detected(self, temp):
         self.temp = temp
-        self.log("detected temp %s" % temp)
+        self.log("temp %s" % temp)
 
     def get_status(self):
         return self.temp

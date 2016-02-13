@@ -11,7 +11,7 @@ class HumiditySensor(SensorDevice):
 
     def detected(self, humidity):
         self.humidity = humidity
-        self.log("detected humidity %s" % humidity)
+        self.log("humidity %s" % humidity)
 
     def get_status(self):
         return self.humidity

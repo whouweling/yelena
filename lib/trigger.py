@@ -50,6 +50,8 @@ class MotionDetectedTrigger(Trigger):
 
     def check(self):
         sensor = get_device(self.device)
+        if not sensor.motion:
+            return False
         return time.time() < (sensor.motion + self.timeout)
 
 

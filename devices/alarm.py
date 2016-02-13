@@ -22,11 +22,11 @@ class Alarm(SensorDevice):
     def switch(self, status):
 
         if not self.alarm and status:
-            self.log("alarm activated")
+            self.log("activated")
             self.last_activated = time.time()
 
         if self.alarm and not status:
-            self.log("alarm de-activated")
+            self.log("de-activated")
 
         self.alarm = status
 
