@@ -15,6 +15,7 @@ import logging
 import settings
 import time
 
+from devices.base import SwitchDevice
 from devices.light import Light
 from devices.dimmer import Dimmer
 
@@ -79,7 +80,7 @@ class RFXCom(CommsDevice):
 
       if to:
 
-          if isinstance(device, Light):
+          if isinstance(device, SwitchDevice):
              level = "01"
 
           if isinstance(device, Dimmer):
