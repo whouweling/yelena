@@ -15,6 +15,7 @@ import logging
 import settings
 import time
 
+from devices.base import SwitchDevice
 from devices.light import Light
 from devices.dimmer import Dimmer
 
@@ -79,7 +80,7 @@ class RFXCom(CommsDevice):
 
       if to:
 
-          if isinstance(device, Light):
+          if isinstance(device, SwitchDevice):
              level = "01"
 
           if isinstance(device, Dimmer):
@@ -103,7 +104,7 @@ class RFXCom(CommsDevice):
 
     def undim(self, device):
 
-       device.level += 50
+       device.level += 10
        if device.level > 255:
          device.level = 255
 
@@ -113,7 +114,7 @@ class RFXCom(CommsDevice):
 
     def dim(self, device):
 
-       device.level -= 50
+       device.level -= 10
        if device.level < 1:
          device.level = 1
 

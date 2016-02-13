@@ -88,6 +88,12 @@
             color: #555;
         }
 
+        .device.device-switch.true {
+            background: #1976D2;
+            color: #fff;
+        }
+
+
         .device .device-icon {
             font-size: 30px;
             margin: 10px;
@@ -206,6 +212,18 @@
           </div>
         </script>
 
+        <script id="device-Switch" type="text/x-handlebars-template">
+          <div class="card device <%= status %> device-switch action" action="switch" target="<%= name %>">
+            <div class="device-icon">
+            <% if(status) { %>
+               <i class="fa fa-toggle-on"></i></div>
+            <% } else { %>
+               <i class="fa fa-toggle-off"></i></div>
+            <% } %>
+            <div class="device-type">switch</div>
+            <div class="device-name"><%= name %></div>
+          </div>
+        </script>
 
         <script id="device-Dimmer" type="text/x-handlebars-template">
           <div class="card device <%= status %> device-light action" action="switch" target="<%= name %>">
