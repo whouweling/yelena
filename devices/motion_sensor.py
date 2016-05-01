@@ -11,8 +11,10 @@ class MotionSensor(SensorDevice):
         self.timeout = timeout
 
     def detected(self):
+        if self.motion:
+           if time.time() < (self.motion + self.timeout):
+              self.log("motion detected")
         self.motion = time.time()
-        self.log("motion detected")
 
     def switch(self, to):
         self.motion = time.time()

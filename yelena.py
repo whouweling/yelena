@@ -6,8 +6,8 @@ import sys
 
 try:
     import settings
-except ImportError:
-    print("Error: missing 'settings.py'")
+except ImportError as e:
+    print("Error: unable to load 'settings.py': %s" % e)
     sys.exit(1)
 
 from lib.context import Context

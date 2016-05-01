@@ -104,7 +104,7 @@ class RFXCom(CommsDevice):
 
     def undim(self, device):
 
-       device.level += 10
+       device.level += 2
        if device.level > 255:
          device.level = 255
 
@@ -114,9 +114,11 @@ class RFXCom(CommsDevice):
 
     def dim(self, device):
 
-       device.level -= 10
-       if device.level < 1:
-         device.level = 1
+       device.level -= 2
+       if device.level < 240:
+         device.level = 240
+
+       print(device.level)
 
        if device.status:
             dim = hex(device.level)[2:4]
