@@ -6,9 +6,9 @@ rules = []
 
 class Rule:
 
-    def __init__(self, name, triggers, actions):
+    def __init__(self, name, conditions, actions):
         self.name = name
-        self.triggers = triggers
+        self.conditions = conditions
         self.actions = actions
         self.active = None
         rules.append(self)
@@ -16,8 +16,8 @@ class Rule:
 
     def check(self):
 
-        for trigger in self.triggers:
-            if not trigger.check():
+        for condition in self.conditions:
+            if not condition.check():
                 return False
 
         return True
